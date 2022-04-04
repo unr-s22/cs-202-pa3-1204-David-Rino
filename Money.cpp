@@ -51,8 +51,9 @@ bool Money::operator==(const Money &m) const {
     return dollars == m.dollars && cents == m.cents;
 }
 
+//Used to Find the Sum (Deposits) Also takes in consideration of the Negative
 Money Money::operator+(const Money &m) const {
-    bool resultNeg;
+    bool negative;
     int dollarsSum, centsSum;
     
     if (isNegative == m.isNegative) {
@@ -62,27 +63,29 @@ Money Money::operator+(const Money &m) const {
             dollarsSum += 1;
             centsSum -= 100;
         }
-        resultNeg = isNegative;
+        negative = isNegative;
     } 
     else {
         dollarsSum = std::abs(dollars - m.dollars);
         centsSum = std::abs(cents - m.cents);
-        resultNeg = dollars < m.dollars || (dollars == m.dollars && cents < m.cents) ? !isNegative : isNegative;
+        negative = dollars < m.dollars || (dollars == m.dollars && cents < m.cents) ? !isNegative : isNegative;
     }
    
-    Money result(dollarsSum, centsSum, resultNeg);
+    Money result(dollarsSum, centsSum, negative);
     return result;
 }
 
+//Used to find the difference (Withdrawls) takes into consideration of the negative 
+//I.E withdraw more money than what it is in the Bank Account
 Money Money::operator-(const Money &m) const {
-    bool resultNeg;
+    bool negative;
     int dollarsDif, centsDif;
     
     if (isNegative == m.isNegative) {
         
         dollarsDif = std::abs(dollars - m.dollars);
         centsDif = std::abs(cents - m.cents);
-        resultNeg = dollars < m.dollars || (dollars == m.dollars && cents < m.cents) ? !isNegative : isNegative;
+        negative = dollars < m.dollars || (dollars == m.dollars && cents < m.cents) ? !isNegative : isNegative;
     } 
     else {
         dollarsDif = dollars + m.dollars;
@@ -91,9 +94,9 @@ Money Money::operator-(const Money &m) const {
             dollarsDif += 1;
             centsDif -= 100;
         }
-        resultNeg = isNegative;
+        negative = isNegative;
     }
     
-    Money result(dollarsDif, centsDif, resultNeg);
+    Money result(dollarsDif, centsDif, negative);
     return result;
 }
